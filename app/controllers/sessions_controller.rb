@@ -1,13 +1,19 @@
 class SessionsController < Devise::SessionsController
   respond_to :json
 
-  private
-
-  def respond_with(resource, _opts = {})
-    render json: resource
+    def create
+      user = User.find_by(username: params[:username])
+      if user&.authenticate(params[:password])
+          session[:user_id] = user.id
+          render json: user
+      else
+          render json: {errors: ["Invalid username or password", "Please try again"]}, status: :unauthorized
+      end
   end
 
-  def respond_to_on_destroy
-    head :no_content
+  def destroy
+      return render json: {errors: ["User not found", "kindly log in"]}, status: :unauthorized unless session.include? :user_id
+      session.delete :user_id
+      head :no_content
   end
 end

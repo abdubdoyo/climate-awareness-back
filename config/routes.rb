@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    sessions: 'sessions'
-  }
-  resources :users, only: [:show, :update, :destroy]
+
+  resources :users, only: [:create, :show, :update, :destroy]
 
   resources :carbon_footprints, only: [:index, :show, :create, :update, :destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
