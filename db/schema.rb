@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_04_045859) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_04_050854) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "carbon_footprints", force: :cascade do |t|
+    t.string "type_of_public_transport"
+    t.string "type_of_car"
+    t.integer "hours_driven_per_week"
+    t.integer "monthly_electricity_usage"
+    t.string "diet"
+    t.string "waste_management"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_carbon_footprints_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -26,4 +39,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_04_045859) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "carbon_footprints", "users"
 end
